@@ -1163,6 +1163,10 @@ E_y = integrate(y*p_xy, (x, -oo, oo),(y,-oo,oo))
 E_xy - E_x*E_y   # 3/160
 ```
 
+![image-20220621185330752](./images/3-5.png)
+
+
+
 【例子】设二维随机变量 $(X, Y)$ 的联合密度函数为
 $$
 p(x, y)= \begin{cases}\frac{1}{3}(x+y), & 0<x<1,0<y<2, \\ 0, & \text { 其他. }\end{cases}
@@ -1347,13 +1351,317 @@ Matrix([[1,corr_xy],[corr_xy,1]])
 
 
 
+#### (1) 依概率收敛
+
+频率可以近似地看成概率，这个观点十分只管但是并没有告诉我们频率什么时候可以近似概率。事实上，频率是概率的稳定值，又或者说频率稳定于概率。
+
+设有一大批产品， 其不合格品率为 $p$。 现一个接一个地检查产品的合格性，记前 $n$ 次检查发现 $S_{n}$ 个不合格品, 而 $v_{n}=\frac{S_{n}}{n} $ 为不合格品出现的频率。 当检查继续下去， 我们就发现频率序列 $\left\{v_{n}\right\}$ 有如下两个现象：
+（1）频率 $v_{n}$ 对概率 $p$ 的绝对偏差 $\left|v_{n}-p\right|$ 将随 $n$ 增大而呈现逐渐减小的趋势， 但无法说它收玫于零。
+
+（2）由于频率的随机性，绝对偏差 $\left|v_{n}-p\right|$ 时大时小。 虽然我们无法排除大偏差发生的可能性, **但随着 $n$ 不断增大， 大偏差发生的可能性会越来越小**。这是一种新的极限概念。
+
+```python
+# 模拟抛硬币正面的概率是否会越来越接近0.5
+import random
+def Simulate_coin(test_num):
+    random.seed(100)
+    coin_list = [1 if (random.random()>=0.5) else 0  for i in range(test_num)]   # 模拟试验结果
+    coin_frequence = np.cumsum(coin_list) / (np.arange(len(coin_list))+1)  # 计算正面为1的频率
+    plt.figure(figsize=(6,4))
+    plt.plot(np.arange(len(coin_list))+1, coin_frequence, c='blue', alpha=0.7)
+    plt.axhline(0.5,linestyle='--',c='red',alpha=0.5)
+    plt.xlabel("test_index")
+    plt.ylabel("frequence")
+    plt.title(str(test_num)+" times")
+    plt.show()
+
+Simulate_coin(test_num = 500)
+Simulate_coin(test_num = 1000)
+Simulate_coin(test_num = 5000)
+```
 
 
 
+#### （2）依分布收敛：
+
+刚刚给大家介绍的依概率收敛，描述的是当$n \rightarrow \infty$时，随机变量序列越来越接近（趋近于）某个确定的随机变量的概率接近于1。同时，我们也知道随机变量的分布函数全面描述了随机变量的规律，因此会不会随机变量的分布函数序列$\{F_n(x) \}$会收敛到一个极限分布函数$F(x)$呢？而依分布收敛描述的就是随机变量的分布函数序列$\{F_n(x) \}$如何收敛到极限分布函数$F(x)$的规律，具体来说：
+
+设随机变量 $X, X_{1}, X_{2}, \cdots$ 的分布函数分别为 $F(x), F_{1}(x), F_{2}(x), \cdots$。 若对 $F(x)$ 的任一**连续点** $x$， 都有
+$$
+\lim _{n \rightarrow \infty} F_{n}(x)=F(x),
+$$
+则称 $\left\{F_{n}(x)\right\}$ **弱收敛**于 $F(x)$， 记作
+$$
+F_{n}(x) \stackrel{W}{\longrightarrow} F(x) 
+$$
+也称相应的随机变量序列 $\left\{X_{n}\right\}$ 按分布收敛于 $X$， 记作
+$$
+X_{n} \stackrel{L}{\longrightarrow} X
+$$
+
+在以上的定义中，我们看到一个词，叫弱收敛，为什么叫弱收敛呢？事实上，依概率收敛是一种比按分布收敛更强的收敛性，也就是说依概率收敛可以推出按分布收敛。
 
 
 
+### 大数定律
 
+- **伯努利大数定律**：
+
+设 $S_{n}$ 为 $n$ 重伯努利试验（结果只有0-1）中事件 $A$ 发生的次数，$\frac{S_{n}}{n}$就是事件 $A$ 发生的频率， $p$ 为每次试验中 $A$ 出现的概率， 则对任意的 $\varepsilon>0$， 有
+$$
+\lim _{n \rightarrow \infty} P\left(\left|\frac{S_{n}}{n}-p\right|<\varepsilon\right)=1 
+$$
+伯努利大数定律的道理是频率稳定于概率，已经在依概率收敛里讲的很清楚了，这里不多加阐述。下面，我们利用这个结论，看看如何使用伯努利大数定律计算定积分的值，这个方法叫做蒙特卡洛模拟法（随机投点法）。
+
+【例子】使用蒙特卡洛求定积分
+
+设 $0 \leqslant f(x) \leqslant 1$, 求 $f(x)$ 在 区间 $[0,1]$ 上的积分值
+$$
+J=\int_{0}^{1} f(x) \mathrm{d} x 
+$$
+方法就是：我们在正方形$\{0 \leqslant x \leqslant 1,0 \leqslant y \leqslant 1\}$内均匀地投点$(x_i,y_i)$，投n个点，点越多越好。如果某个点$y_i \le f(x_i)$,则认为事件发生，我们计算满足$y_i \le f(x_i)$点的个数$S_n$，使用大数定律：频率稳定于概率，即：$\frac{S_n}{n}$就是积分值。
+
+```python
+# 蒙特卡洛积分计算的原理：
+x_arr = np.linspace(0,1,1000)
+x_n = uniform.rvs(size = 100)  # 随机选择n个x随机数
+y_n = uniform.rvs(size = 100)  # 随机选择n个y随机数
+plt.stackplot(x_arr,np.square(x_arr),alpha=0.5,color="skyblue") #堆积面积图
+plt.scatter(x_n,y_n)
+plt.text(1.0,1.0,r'$y=x^2$')
+plt.show()
+```
+
+
+
+```python
+# 使用蒙特卡洛法计算y=x^2在【0，1】上的定积分
+from scipy.stats import uniform
+def MonteCarloRandom(n):
+    x_n = uniform.rvs(size = n)  # 随机选择n个x随机数
+    y_n = uniform.rvs(size = n)  # 随机选择n个y随机数
+    f_x = np.square(x_n)    # 函数值f_x = x**2
+    binory_y = [1.0 if y_n[i] < f_x[i] else 0 for i in range(n)]    # 如果y<x**2则为1，否则为0
+    J = np.sum(binory_y) / n
+    return J
+    
+print("y=x**2在[0,1]的定积分为：",integrate(x**2, (x,0,1)))
+print("模拟10次的定积分为：",MonteCarloRandom(10))
+print("模拟100次的定积分为：",MonteCarloRandom(100))
+print("模拟1000次的定积分为：",MonteCarloRandom(1000))
+print("模拟10000次的定积分为：",MonteCarloRandom(10000))
+print("模拟100000次的定积分为：",MonteCarloRandom(100000))
+print("模拟1000000次的定积分为：",MonteCarloRandom(1000000))
+```
+
+
+
+- **辛钦大数定律**：
+
+设 $\left\{X_{n}\right\}$ 为一**独立同分布**的随机变量序列， 若 $X_{i}$ 的数学期望存在， 则 $\left\{X_{n}\right\}$ 服从大数定律， 即对任意的 $\varepsilon>0$，$\lim _{n \rightarrow \infty} P\left(\left|\frac{1}{n} \sum_{i=1}^{n} X_{i}-\frac{1}{n} \sum_{i=1}^{n} E\left(X_{i}\right)\right|<\varepsilon\right)=1$成立。
+
+对于独立同分布且具有相同均值 $\mu$ 的随机变量X，$X_1, X_2, \ldots \ldots  X_n$ ，当 $n$ 很大时，它们的算术平均数 $\frac{1}{n} \sum_{i=1}^{n} X_{i}$ 很接近于 $\mu$。也就是说可以使用样本的均值去估计总体均值（这里不明白没有关系，后面讲到数理统计的时候会重申这个概念）。
+
+
+
+### 中心极限定理
+
+大数定律讨论的是在什么条件下（独立同分布且数学期望存在），随机变量序列的算术平均**依概率收敛**到其均值的算术平均。下面，我们来讨论下什么情况下，独立随机变量的和$Y_n = \sum_{i=1}^nX_i$的分布函数会依分布收敛于正态分布。我们使用一个小例子来说明什么是中心极限定理：
+
+我们想研究一个复杂工艺产生的产品误差的分布情况，诞生该产品的工艺中，有许多方面都能产生误差，如：每个流程中所需的生产设备的精度误差、材料实际成分与理论成分的差异带来的误差、工人当天的专注程度、测量误差等等。由于这些因素非常多，每个影响产品误差的因素对误差的影响都十分微笑，而且这些因素的出现也十分随机，数值有正有负。现在假设每一种因素都假设为一个随机变量$X_i$，先按照直觉假设$X_i$服从$N(0,\sigma_i^2)$，零均值假设是十分合理的，因为这些因素的数值有正有负，假设每一个因素的随机变量的方差$\sigma_i^2$是随机的。接下来，我们希望研究的是产品的误差$Y_{n}=X_{1}+X_{2}+\cdots+X_{n}$，当n很大时是什么分布？
+
+
+
+```python
+# 模拟n个正态分布的和的分布
+from scipy.stats import norm
+def Random_Sum_F(n):
+    sample_nums = 10000
+    random_arr = np.zeros(sample_nums)
+    for i in range(n):
+        mu = 0
+        sigma2 = np.random.rand()
+        err_arr = norm.rvs(size=sample_nums)
+        random_arr += err_arr
+    plt.hist(random_arr)
+    plt.title("n = "+str(n))
+    plt.xlabel("x")
+    plt.ylabel("p (x)")
+    plt.show()
+
+Random_Sum_F(2)
+Random_Sum_F(10)
+Random_Sum_F(100)
+Random_Sum_F(1000)
+Random_Sum_F(10000)
+```
+
+有可能你会觉得，n个正态分布的和肯定还是正态分布啦，那如果误差满足其他分布的情况下，是否还有上述实验的规律呢？我们验证下，这次我们使用均匀分布、指数分布、泊松分布、0-1分布：
+
+```python
+# 模拟n个均匀分布的和的分布
+from scipy.stats import uniform
+def Random_Sum_F(n):
+    sample_nums = 10000
+    random_arr = np.zeros(sample_nums)
+    for i in range(n):
+        err_arr = uniform.rvs(size=sample_nums)
+        random_arr += err_arr
+    plt.hist(random_arr)
+    plt.title("n = "+str(n))
+    plt.xlabel("x")
+    plt.ylabel("p (x)")
+    plt.show()
+
+Random_Sum_F(2)
+Random_Sum_F(10)
+Random_Sum_F(100)
+Random_Sum_F(1000)
+Random_Sum_F(10000)
+```
+
+```python
+# 模拟n个指数分布的和的分布
+from scipy.stats import expon
+def Random_Sum_F(n):
+    sample_nums = 10000
+    random_arr = np.zeros(sample_nums)
+    for i in range(n):
+        err_arr = expon.rvs(size=sample_nums)
+        random_arr += err_arr
+    plt.hist(random_arr)
+    plt.title("n = "+str(n))
+    plt.xlabel("x")
+    plt.ylabel("p (x)")
+    plt.show()
+
+Random_Sum_F(2)
+Random_Sum_F(10)
+Random_Sum_F(100)
+Random_Sum_F(1000)
+Random_Sum_F(10000)
+```
+
+
+
+```python
+# 模拟n个泊松分布的和的分布
+from scipy.stats import poisson
+def Random_Sum_F(n):
+    sample_nums = 10000
+    random_arr = np.zeros(sample_nums)
+    for i in range(n):
+        mu = 1.0
+        err_arr = poisson.rvs(mu=mu,size=sample_nums)
+        random_arr += err_arr
+    plt.hist(random_arr)
+    plt.title("n = "+str(n))
+    plt.xlabel("x")
+    plt.ylabel("p (x)")
+    plt.show()
+
+Random_Sum_F(2)
+Random_Sum_F(10)
+Random_Sum_F(100)
+Random_Sum_F(1000)
+Random_Sum_F(10000)
+```
+
+
+
+```python
+# 模拟n个0-1分布的和的分布
+from scipy.stats import bernoulli
+def Random_Sum_F(n):
+    sample_nums = 10000
+    random_arr = np.zeros(sample_nums)
+    for i in range(n):
+        p = 0.5
+        err_arr = bernoulli.rvs(p=p,size=sample_nums)
+        random_arr += err_arr
+    plt.hist(random_arr)
+    plt.title("n = "+str(n))
+    plt.xlabel("x")
+    plt.ylabel("p (x)")
+    plt.show()
+
+Random_Sum_F(2)
+Random_Sum_F(10)
+Random_Sum_F(100)
+Random_Sum_F(1000)
+Random_Sum_F(10000)
+```
+
+
+
+以上实验说明了一个道理：假设 $\left\{X_{n}\right\}$ 独立同分布、方差存在， 不管原来的分布是什么， 只要 $n$ 充分大，就可以**用正态分布去逼近随机变量和的分布**，所以这个定理有着广泛的应用。
+
+```python
+# 由均匀分布随机数产生N个正态分布的随机数
+import random
+def Random_Norm(N,mu,sigma):
+    random_list = []
+    for i in range(N):
+        uniform_sum = 0
+        for j in range(12):
+            uniform_rand = random.random() # [0,1]均匀分布的随机数
+            uniform_sum += uniform_rand
+        y = uniform_sum - 6
+        z = mu + sigma * y
+        random_list.append(z)
+    return random_list
+
+norm_random_list = Random_Norm(10000,10,2)
+plt.hist(np.array(norm_random_list))
+plt.xlabel("x")
+plt.ylabel("p (x)")
+plt.title("由均匀分布随机数构造正态分布随机数")
+plt.text(16,2500,r'$N(10,4)$')
+plt.show()
+```
+
+
+
+### TODO 作业
+
+<div class="alert alert-warning" role="alert">
+  <h3>📋任务</h3> 
+</div>
+
+GitModel公司是一家专业的投资银行，志在帮助客户更好地管理资产。客户手头上有一笔100万的资金，希望将这笔钱投入股票市场进行投资理财，投资人看中了两个股票$A$、$B$，股票分析师通过对股票$A$、$B$的历史数据分析发现：股票$A$的平均收益近似服从$N(0.1,0.01)$，股票B的平均收益近似服从$N(0.3,0.04)$。现在客户希望通过分析得出投资股票$A$、$B$的最佳组合（在预期收益确定情况下最小风险时，需要投资$A$、$B$的份额）。
+
+分析：
+
+首先，我们先来分析投资组合的收益应该如何计算：设$A$、$B$的投资收益率为随机变量$X$、$Y$，因此$X～N(0.1,0.01)$，$Y～N(0.3,0.04)$。设$x_1$为投资A的份额，$y_1=1-x_1$为投资B的份额，因此投资组合的收益率为：$Z = x_1*X + y_1*Y$，投资组合的平均收益率为：$E(Z) = x_1*E(X) + y_1*E(Y)$。
+
+接下来，我们来分析投资组合的风险应该如何计算：何为风险，最简单来说就是收益的不确定性，如果收益是确定且固定的，就无所谓的风险可言。根据对风险的直观描述，我们可以定义风险为收益率的方差，因此：股票A的风险为$\sigma_x^2 = 0.01$，股票B的风险为$\sigma_y^2 = 0.04$,而投资组合的风险为
+$$
+\begin{aligned}
+Var(Z) &= Var(x_1*X + y_1*Y)\\
+&=x_{1}^{2} \operatorname{Var}(X)+y_{1}^{2} \operatorname{Var}(Y)+2 x_{1}y_{1} \operatorname{Cov}(X, Y)
+\end{aligned}
+$$
+因此，最佳的投资组合应该是风险最小时的投资组合，即：
+$$
+\begin{aligned}
+&min \quad Var(Z) \\
+&= min \quad x_{1}^{2} \operatorname{Var}(X)+y_{1}^{2} \operatorname{Var}(Y)+2 x_{1}y_{1} \operatorname{Cov}(X, Y)\\
+&=\frac{d(Var(Z))}{d(x_1)} = 0
+\end{aligned}
+$$
+
+
+```python
+# 寻找最佳投资组合，假设corr_xy = 0.4
+from sympy import *
+x = symbols('x')
+y = symbols('y')
+y = 1-x
+## 请根据var_Z的定义写出相应的公式代码
+var_z = (-------------------------------------)
+## 请根据相应的优化分析写出代码
+print(------------------------------)
+```
 
 
 
