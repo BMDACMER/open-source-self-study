@@ -19,6 +19,10 @@
 ### Framework for Edge AI
 
 - E-Tree Learning: A Novel Decentralized Model Learning Framework for Edge AI  [online](https://arxiv.org/pdf/2008.01553.pdf) [local](./paper/E-Tree Learning A Novel Decentralized Model.pdf)
+- EdgeTB: A Hybrid Testbed for Distributed Machine Learning at the Edge With High Fidelity [online](https://ieeexplore.ieee.org/abstract/document/9693130) [local](./paper/EdgeTB_A_Hybrid_Testbed_for_Distributed_Machine_Learning_at_the_Edge_With_High_Fidelity.pdf)
+- RoleML: Role-Oriented Programming Model for Customizable Distributed Machine Learning on Edges [local](./paper/RoleML.pdf)
+
+
 
 
 
