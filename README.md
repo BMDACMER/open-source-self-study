@@ -24,6 +24,11 @@
 
 
 
+### Distributed Machine Learning
+
+- More Effective Distributed ML via a Stale Synchronous Parallel Parameter Server  [online](https://proceedings.neurips.cc/paper/2013/file/b7bb35b9c6ca2aee2df08cf09d7016c2-Paper.pdf) [local](./paper/NIPS-2013-more-effective-distributed-ml-via-a-stale-synchronous-parallel-parameter-server-Paper.pdf) [配套PPT](https://imsarchives.nus.edu.sg/oldwww/Programs/014wliv/files/qirong.pdf)
+- 
+
 
 
 
