@@ -19,7 +19,7 @@
 ### Framework for Edge AI
 
 - E-Tree Learning: A Novel Decentralized Model Learning Framework for Edge AI  [online](https://arxiv.org/pdf/2008.01553.pdf) [local](./paper/E-Tree Learning A Novel Decentralized Model.pdf)
-- EdgeTB: A Hybrid Testbed for Distributed Machine Learning at the Edge With High Fidelity [online](https://ieeexplore.ieee.org/abstract/document/9693130) [local](./paper/EdgeTB_A_Hybrid_Testbed_for_Distributed_Machine_Learning_at_the_Edge_With_High_Fidelity.pdf) ==Doing==
+- EdgeTB: A Hybrid Testbed for Distributed Machine Learning at the Edge With High Fidelity [online](https://ieeexplore.ieee.org/abstract/document/9693130) [local](./paper/EdgeTB_A_Hybrid_Testbed_for_Distributed_Machine_Learning_at_the_Edge_With_High_Fidelity.pdf) 
 - Federated Learning: Communication-Efficient Learning of Deep Networks from Decentralized Data [online](https://arxiv.org/abs/1602.05629) [local](./paper/Federated-learning.pdf)  ==TODO==
 - Gossip Learning: Gossip Learning as a Decentralized Alternative to Federated Learning⋆ [online](http://www.inf.u-szeged.hu/~ihegedus/publ/dais19a.pdf) [local](./paper/gossip-learning.pdf)  ==TODO==
 - RoleML: Role-Oriented Programming Model for Customizable Distributed Machine Learning on Edges [local](./paper/RoleML.pdf) ==TODO==
@@ -30,6 +30,10 @@
 
 - More Effective Distributed ML via a Stale Synchronous Parallel Parameter Server  [online](https://proceedings.neurips.cc/paper/2013/file/b7bb35b9c6ca2aee2df08cf09d7016c2-Paper.pdf) [local](./paper/NIPS-2013-more-effective-distributed-ml-via-a-stale-synchronous-parallel-parameter-server-Paper.pdf) [配套PPT](https://imsarchives.nus.edu.sg/oldwww/Programs/014wliv/files/qirong.pdf)  ==TODO==
 - 
+
+
+
+### Others
 
 
 
