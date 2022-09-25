@@ -4,7 +4,7 @@
 
 ### Survey
 
-- Advances and Open Problems in Federated Learning [online](https://arxiv.org/pdf/1912.04977.pdf) [local](./paper/1912.04977v3.pdf)  ==Doing==
+- Advances and Open Problems in Federated Learning [online](https://arxiv.org/pdf/1912.04977.pdf) [local](./paper/1912.04977v3.pdf)  
 - A Survey on federated learning [ICCA2020](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9264412&tag=1) [local](./paper/A Survey on federated learning.pdf)
 - A survey on federated learning [knowledge-Based Systems2021](https://www.sciencedirect.com/science/article/pii/S0950705121000381) [local](./paper/A-Survey-of-FL2020.pdf)
 
