@@ -58,6 +58,8 @@ This repository includes the paper of federated learning, reinforce learning and
 ### Machine learning for emerging communication systems and applications 
 
 - [Deep Reinforcement Learning with Communication Transformer for Adaptive Live Streaming in Wireless Edge Networks](https://ieeexplore.ieee.org/document/9605672) [code](https://github.com/wsyCUHK/SACCT)
+- L. Yang, J. Cao, H. Cheng and Y. Ji, "Multi-User Computation Partitioning for Latency Sensitive Mobile Cloud Applications," in IEEE Transactions on Computers, vol. 64, no. 8, pp. 2253-2266, 1 Aug. 2015, doi: 10.1109/TC.2014.2366735.
+- 
 
 
 
